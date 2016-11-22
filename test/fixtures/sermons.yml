@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  audio_file_data: MyText
+  identifier: MyString
+  recorded_at: 2016-11-16
+  series: MyString
+  title: MyString
+  scripture_focus: MyString
+  scripture_reading: MyString
+  scripture_reading_might_be_focus: false
+  speaker: MyString
+
+two:
+  audio_file_data: MyText
+  identifier: MyString
+  recorded_at: 2016-11-16
+  series: MyString
+  title: MyString
+  scripture_focus: MyString
+  scripture_reading: MyString
+  scripture_reading_might_be_focus: false
+  speaker: MyString

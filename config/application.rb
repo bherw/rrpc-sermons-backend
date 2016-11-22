@@ -27,4 +27,15 @@ module RrpcApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
   end
+
+  class Error < StandardError; end
+  class NotAuthorizedError < Error; end
+
+  def self.audio_peaks_resolution
+    ENV.fetch('AUDIO_PEAKS_RESOLUTION', 4096)
+  end
+
+  def self.webapp_url
+    ENV['WEBAPP_URL']
+  end
 end

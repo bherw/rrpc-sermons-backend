@@ -6,6 +6,12 @@ AllCops:
 Documentation:
   Enabled: false
 
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
 Metrics/LineLength:
   Max: 100
 
