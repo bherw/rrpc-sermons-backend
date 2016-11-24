@@ -24,4 +24,8 @@ class Sermon < ApplicationRecord
       audio_file.duration
     end
   end
+
+  def to_param
+    identifier
+  end
 end

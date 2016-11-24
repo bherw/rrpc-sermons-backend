@@ -82,7 +82,7 @@ module V0
 
     # Use callbacks to share common setup or constraints between actions.
     def set_sermon
-      @sermon = Sermon.find(params[:id])
+      @sermon = Sermon.find_by!(identifier: params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
@@ -92,7 +92,7 @@ module V0
     end
 
     def sermon_url(sermon)
-      url_for "v0/sermon/#{sermon.id}"
+      url_for "v0/sermon/#{sermon.identifier}"
     end
   end
 end
