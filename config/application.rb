@@ -35,6 +35,10 @@ module RrpcApi
     ENV.fetch('AUDIO_PEAKS_RESOLUTION', 4096)
   end
 
+  def self.mp3_prefix
+    ENV.fetch('MP3_PREFIX') { 'rrpc-' }
+  end
+
   def self.webapp_url
     ENV['WEBAPP_URL']
   end

@@ -38,5 +38,18 @@ class SermonUploader < Shrine
 
     { original: original, waveform: waveform }
   end
+
+  def generate_location(io, context)
+    if context[:record]
+      type     = class_location(context[:record].class) if context[:record].class.name
+      id       = context[:record].id if context[:record].respond_to?(:id)
+      basename = RrpcApi.mp3_prefix + context[:record].identifier + File.extname(extract_filename(io).to_s)
+    end
+    name     = context[:name]
+    uid      = generate_uid(io)
+
+    [type, id, name, context[:version], uid, basename].compact.join("/")
+  end
+
   class AudioWaveformGenerationError; end
 end
