@@ -11,7 +11,7 @@ Shrine.plugin :pretty_location
 Shrine::Attacher.promote { |data| PromoteJob.perform_async(data) }
 Shrine::Attacher.delete { |data| DeleteJob.perform_async(data) }
 
-if Rails.env.production?
+if ENV['SHRINE_S3_STORE']
   s3_options = {
     access_key_id:     ENV['S3_ACCESS_KEY_ID'],
     secret_access_key: ENV['S3_SECRET_ACCESS_KEY'],
