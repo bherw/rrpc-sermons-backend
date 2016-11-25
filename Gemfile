@@ -1,8 +1,10 @@
 source 'https://rubygems.org'
 
 gem 'addressable'
+gem 'chewy'
 gem 'curb'
 gem 'dotenv-rails'
+gem 'kaminari'
 gem 'pg'
 gem 'rackheader'
 gem 'rack-rewrite'
@@ -10,6 +12,7 @@ gem 'rails', '~> 5.0'
 gem 'puma'
 gem 'shrine'
 gem 'sidekiq'
+gem 'sidekiq-scheduler', '~> 2.0'
 gem 'taglib-ruby'
 
 # Use Redis adapter to run Action Cable in production

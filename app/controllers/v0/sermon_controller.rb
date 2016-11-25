@@ -9,12 +9,14 @@ module V0
 
     # GET /sermon
     def index
-      @sermons = Sermon.all
+      @sermons = SermonSearch.new(params).load
 
       respond_to do |format|
-        format.json { render_json results: @sermons, total: @sermons.length }
+        format.json { render_json results: @sermons, total: @sermons.total_count }
         format.atom { render xml: index_atom }
       end
+    rescue SermonSearch::QueryParsingError => e
+      render json: { errors: e.message }
     end
 
     # GET /sermon/1

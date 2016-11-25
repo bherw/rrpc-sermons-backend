@@ -1,6 +1,8 @@
 class Sermon < ApplicationRecord
   include SermonUploader[:audio]
 
+  update_index 'sermons#sermon', :self
+
   def as_json(_opts)
     super except: [:audio_data], methods: [:audio_url, :audio_waveform_url, :duration]
   end
@@ -23,6 +25,10 @@ class Sermon < ApplicationRecord
     else
       audio.duration
     end
+  end
+
+  def scripture
+    scripture_focus || scripture_reading
   end
 
   def to_param

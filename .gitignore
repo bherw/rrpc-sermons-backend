@@ -15,9 +15,7 @@
 .byebug_history
 
 # Who thought putting installation specific configuration and secrets in version control was a good idea?
-config/cable.yml
-config/database.yml
-config/secrets.yml
+config/*.yml
 .env
 
 public/uploads
