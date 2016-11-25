@@ -87,7 +87,7 @@ module V0
 
     # Only allow a trusted parameter "white list" through.
     def sermon_params
-      params.permit(:audio_file, :identifier, :recorded_at, :series, :title, :scripture_focus,
+      params.permit(:audio, :identifier, :recorded_at, :series, :title, :scripture_focus,
                     :scripture_reading, :scripture_reading_might_be_focus, :speaker)
     end
 
