@@ -26,20 +26,25 @@ module RrpcApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+    config.app = config_for(:app)
   end
 
   class Error < StandardError; end
   class NotAuthorizedError < Error; end
 
   def self.audio_peaks_resolution
-    ENV.fetch('AUDIO_PEAKS_RESOLUTION', 4096)
+    Rails.configuration.app.fetch('audio_peaks_resolution') { 4096 }
   end
 
   def self.mp3_prefix
-    ENV.fetch('MP3_PREFIX') { 'rrpc-' }
+    Rails.configuration.app.fetch('mp3_prefix') { '' }
+  end
+
+  def self.self_url
+    Rails.configuration.app.fetch('self_url')
   end
 
   def self.webapp_url
-    ENV['WEBAPP_URL']
+    Rails.configuration.app.fetch('webapp_url')
   end
 end

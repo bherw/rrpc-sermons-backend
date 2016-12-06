@@ -16,6 +16,5 @@
 
 # Who thought putting installation specific configuration and secrets in version control was a good idea?
 config/*.yml
-.env
 
 public/uploads

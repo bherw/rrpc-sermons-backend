@@ -7,8 +7,9 @@ class ApplicationController < ActionController::API
     raise RrpcApi::NotAuthorizedError unless access_key == secrets.admin_access_key
   end
 
+  # Because we might be at api.foo.com or foo.com/api
   def default_url_options
-    { host: ENV['DEFAULT_URL_HOST'] }
+    { host: RrpcApi.self_url }
   end
 
   def frontend_url_for(options)

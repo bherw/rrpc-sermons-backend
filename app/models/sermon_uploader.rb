@@ -4,6 +4,7 @@ require 'json'
 
 class SermonUploader < Shrine
   plugin :add_metadata
+  plugin :default_storage, store: :store_large
   plugin :determine_mime_type
   plugin :processing
   plugin :validation_helpers
@@ -41,12 +42,16 @@ class SermonUploader < Shrine
 
   def generate_location(io, context)
     if context[:record]
-      type     = class_location(context[:record].class) if context[:record].class.name
-      id       = context[:record].id if context[:record].respond_to?(:id)
-      basename = RrpcApi.mp3_prefix + context[:record].identifier + File.extname(extract_filename(io).to_s)
+      type       = class_location(context[:record].class) if context[:record].class.name
+      id         = context[:record].id if context[:record].respond_to?(:id)
+      identifier = context[:record].identifier
     end
-    name     = context[:name]
-    uid      = generate_uid(io)
+    prefix = RrpcApi.mp3_prefix
+    name   = context[:name]
+    uid    = generate_uid(io)
+    ext    = File.extname(extract_filename(io).to_s)
+
+    basename = [prefix, identifier, ext].compact.join
 
     [type, id, name, context[:version], uid, basename].compact.join("/")
   end
