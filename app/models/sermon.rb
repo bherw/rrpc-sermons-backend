@@ -7,6 +7,10 @@ class Sermon < ApplicationRecord
     super except: [:audio_data], methods: [:audio_url, :audio_waveform_url, :duration]
   end
 
+  def audio_mime_type
+    audio.is_a?(Hash) ? audio[:original].mime_type : audio.mime_type
+  end
+
   def audio_url
     if audio.is_a?(Hash)
       audio[:original].url

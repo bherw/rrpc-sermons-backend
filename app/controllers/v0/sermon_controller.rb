@@ -74,9 +74,9 @@ module V0
               author.name(sermon.speaker)
             end
 
-            entry.link(href: sermon.audio_file_url,
+            entry.link(href: sermon.audio_url,
                        rel:  'enclosure',
-                       type: sermon.audio_file[:original].mime_type)
+                       type: sermon.audio_mime_type)
           end
         end
       end
