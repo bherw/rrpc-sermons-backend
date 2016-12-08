@@ -4,7 +4,7 @@ class ClearShrineCacheJob
   def perform
     Chewy.strategy(:atomic) do
       begin
-        Shrine.storages[:cache].clear!(older_than: Time.now - 24*60*60)
+        Shrine.storages[:cache].clear!(older_than: Time.current - 24.hours)
       rescue ::Error::ENOENT => _
       end
     end

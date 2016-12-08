@@ -2,7 +2,7 @@ class PromoteJob
   include Sidekiq::Worker
 
   def perform(data)
-  	Chewy.strategy(:atomic) do
+    Chewy.strategy(:atomic) do
       Shrine::Attacher.promote(data)
     end
   end

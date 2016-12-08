@@ -21,19 +21,19 @@ if conf['shrine_use_s3']
   }
 
   Shrine.storages = {
-    cache: Shrine::Storage::FileSystem.new('public', prefix: 'uploads/cache'),
-    store: Shrine::Storage::FileSystem.new('public', prefix: 'uploads/store'),
+    cache:       Shrine::Storage::FileSystem.new('public', prefix: 'uploads/cache'),
+    store:       Shrine::Storage::FileSystem.new('public', prefix: 'uploads/store'),
     store_large: Shrine::Storage::S3.new(prefix: 'store', **s3_options),
   }
 
   Shrine.plugin :default_url_options,
-    store: { host: RrpcApi.self_url },
-    store_large: lambda do |io, **_options|
-      {
-        host: conf['s3_public_url'],
-        response_content_disposition: "attachment; filename=\"#{io.original_filename}\"",
-      }
-    end
+                store:       { host: RrpcApi.self_url },
+                store_large: lambda do |io, **_options|
+                  {
+                    host: conf['s3_public_url'],
+                    response_content_disposition: "attachment; filename=\"#{io.original_filename}\"",
+                  }
+                end
 else
   Shrine.storages = {
     cache: Shrine::Storage::FileSystem.new('public', prefix: 'uploads/cache'),
@@ -42,6 +42,6 @@ else
   Shrine.storages[:store_large] = Shrine.storages[:store]
 
   Shrine.plugin :default_url_options,
-    store: { host: RrpcApi.self_url },
-    store_large: { host: RrpcApi.self_url }
+                store:       { host: RrpcApi.self_url },
+                store_large: { host: RrpcApi.self_url }
 end
