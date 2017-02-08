@@ -9,10 +9,14 @@ module V0
     private
 
     def proxied_query
-      Rails.cache.fetch("bible_search/#{params[:query]}?#{request.query_string}",
-                        expires_in: 14.days) do
-        proxied_query!
+      key = "bible_search/#{params[:query]}?#{request.query_string}"
+      if (res = Rails.cache.read(key))
+        return res
       end
+
+      res = proxied_query!
+      Rails.cache.write(key, res, expires_in: 14.days) if res[:status] == 200
+      res
     end
 
     def proxied_query!
