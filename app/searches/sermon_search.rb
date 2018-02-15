@@ -35,11 +35,7 @@ class SermonSearch
     sermons = SermonsIndex.query(mode => { query: @params[:query], default_operator: 'and' })
                           .order(@@es_orders[@params[:order]] || @@es_orders['newest_first'])
                           .page(@params[:page])
-                          .only(:id)
-                          .load
-    # Trigger lazy load
-    sermons.total_count
-    sermons
+                          .objects
 
   rescue Elasticsearch::Transport::Transport::Errors::BadRequest => e
     if (message = e.message.match(/QueryParsingException\[([^;]+)\]/).try(:[], 1))
