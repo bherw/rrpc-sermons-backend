@@ -20,7 +20,7 @@ module V0
     end
 
     def proxied_query!
-      c = Curl::Easy.new("https://bibles.org/v2/#{params[:query]}?#{request.query_string}")
+      c = Curl::Easy.new("http://bibles.org/v2/#{params[:query]}?#{request.query_string}")
       c.follow_location = true
       c.http_auth_types = :basic
       c.username        = Rails.application.secrets.bible_search_access_key
