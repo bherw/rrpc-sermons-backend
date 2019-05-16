@@ -89,7 +89,7 @@ module V0
       image = frontend_url_for("/podcast-image.png")
       author = "Russell RPC"
       email = "contact@russellrpc.org"
-      keywords = "russell,reformed,presbyterian,church,sermon,christian,scripture,bible"
+      keywords = "russell,reformed,presbyterian,church,sermon,christian,scripture,bible,rpc,rrpc"
 
       xml = ::Builder::XmlMarkup.new()
       xml.instruct! :xml, :version => "1.0"
