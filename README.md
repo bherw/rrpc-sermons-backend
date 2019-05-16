@@ -1,24 +1,18 @@
-# README
+Ruby version: 2.4.*
+Requires bundler 2.0
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Required for deps:
+apt install libpq-dev libcurl4-openssl-dev
 
-Things you may want to cover:
+Install audiowaveform binary
 
-* Ruby version
+send to remote using git push prod master or git push staging master
 
-* System dependencies
 
-* Configuration
+app.yml:
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+development:
+  mp3_prefix: rrpc-
+  self_url: http://192.168.1.3:3000
+  webapp_url: http://192.168.1.3:3001
+  s3_public_url: 
