@@ -65,7 +65,7 @@ module V0
         @sermons.each do |sermon|
           feed.entry(sermon, url: frontend_url_for("/sermon/#{sermon.identifier}")) do |entry|
             entry.title(sermon.title)
-            content = '<p>' + sermon.title + '<br>' +
+            content = '<p>' + sermon.title_with_series + '<br>' +
                           sermon.scripture_reading + '<br>' +
                           sermon.speaker + '<br>' +
                           sermon.recorded_at.to_formatted_s(:long) + '</p>'
@@ -89,7 +89,7 @@ module V0
       image = frontend_url_for("/podcast-image.png")
       author = "Russell RPC"
       email = "contact@russellrpc.org"
-      keywords = "russell reformed Presbyterian church sermon christian scripture bible"
+      keywords = "russell,reformed,presbyterian,church,sermon,christian,scripture,bible"
 
       xml = ::Builder::XmlMarkup.new()
       xml.instruct! :xml, :version => "1.0"
@@ -118,19 +118,18 @@ module V0
           @sermons.each do |sermon|
             xml.item do
               description = "Scripture reading: " + sermon.scripture
-              description += "\r\nSeries: " + sermon.series if sermon.series
               url = frontend_url_for("/sermon/#{sermon.identifier}")
 
-              xml.title sermon.title
-              xml.tag!('description') { xml.cdata! description }
+              xml.title sermon.title_with_series
+              xml.description description
               xml.pubDate sermon.recorded_at.to_s(:rfc822)
               xml.enclosure :url => sermon.audio_url, :length => sermon.audio_size, :type => sermon.audio_mime_type
               xml.link url
               xml.guid({:isPermaLink => "false"}, url)
               xml.author sermon.speaker
               xml.itunes :author, sermon.speaker
-              xml.tag!('itunes:subtitle') { xml.cdata! description.truncate(150) }
-              xml.tag!('itunes:summary') { xml.cdata! description }
+              xml.itunes :subtitle, description.truncate(150)
+              xml.itunes :summary, description
               xml.itunes :explicit, 'no'
               xml.itunes :duration, sermon.duration
             end
