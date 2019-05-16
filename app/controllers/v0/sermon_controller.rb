@@ -118,7 +118,7 @@ module V0
           @sermons.each do |sermon|
             xml.item do
               description = "Scripture reading: " + sermon.scripture
-              description += "<br>Series: " + sermon.series if sermon.series
+              description += "\r\nSeries: " + sermon.series if sermon.series
               url = frontend_url_for("/sermon/#{sermon.identifier}")
 
               xml.title sermon.title
