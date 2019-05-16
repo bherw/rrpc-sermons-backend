@@ -14,6 +14,7 @@ module V0
       respond_to do |format|
         format.json { render_json results: @sermons, total: @sermons.total_count }
         format.atom { render xml: index_atom }
+        format.rss { render xml: index_rss }
       end
     rescue SermonSearch::QueryParsingError => e
       render json: { errors: e.message }
@@ -64,11 +65,11 @@ module V0
         @sermons.each do |sermon|
           feed.entry(sermon, url: frontend_url_for("/sermon/#{sermon.identifier}")) do |entry|
             entry.title(sermon.title)
-            entry.content(sermon.title + '<br>' +
+            content = '<p>' + sermon.title + '<br>' +
                           sermon.scripture_reading + '<br>' +
                           sermon.speaker + '<br>' +
-                          sermon.recorded_at.to_formatted_s(:long),
-                          type: 'html')
+                          sermon.recorded_at.to_formatted_s(:long) + '</p>'
+            entry.content(content, 'html')
 
             entry.author do |author|
               author.name(sermon.speaker)
@@ -80,6 +81,68 @@ module V0
           end
         end
       end
+    end
+
+    def index_rss
+      title = "RRPC Sermons"
+      description = "Sermons preached every Lord's Day, morning and evening, at the Russell Reformed Presbyterian Church"
+      image = frontend_url_for("podcast-image.png")
+      author = "Russell RPC"
+      email = "contact@russellrpc.org"
+      keywords = "russell reformed Presbyterian church sermon christian scripture bible"
+
+      xml = ::Builder::XmlMarkup.new()
+      xml.instruct! :xml, :version => "1.0"
+      xml.rss :version => "2.0", "xmlns:itunes" => "http://www.itunes.com/dtds/podcast-1.0.dtd",  "xmlns:media" => "http://search.yahoo.com/mrss/", "xmlns:atom" => "http://www.w3.org/2005/Atom" do
+        xml.channel do
+          xml.tag!("atom:link",  "href"=>url_for(:only_path => false), "rel"=>"self", "type"=>"application/rss+xml") 
+          xml.title title
+          xml.link frontend_url()
+          xml.description description
+          xml.language 'en'
+          xml.pubDate @sermons.first.created_at.to_s(:rfc822)
+          xml.lastBuildDate @sermons.first.created_at.to_s(:rfc822)
+          xml.itunes :author, author
+          xml.itunes :keywords, keywords
+          xml.itunes :explicit, 'clean'
+          xml.itunes :image, :href => image
+          xml.itunes :owner do
+            xml.itunes :name, author
+            xml.itunes :email, email
+          end
+          xml.itunes :block, 'no'
+          xml.itunes :category, :text => 'Religion & Spirituality' do
+            xml.itunes :category, :text => 'Christianity'
+          end
+
+          @sermons.each do |sermon|
+            xml.item do
+              description = "Scripture reading: " + sermon.scripture
+              description += "<br>Series: " + sermon.series if sermon.series
+              url = frontend_url_for("/sermon/#{sermon.identifier}")
+
+              xml.title sermon.title
+              xml.description description
+              xml.pubDate sermon.created_at.to_s(:rfc822)
+              xml.enclosure :url => sermon.audio_url, :length => sermon.audio_size, :type => sermon.audio_mime_type
+              xml.link url
+              xml.guid({:isPermaLink => "false"}, url)
+              xml.author sermon.speaker
+              xml.itunes :author, sermon.speaker
+              xml.itunes :subtitle, description.truncate(150)
+              xml.itunes :summary, description
+              xml.itunes :explicit, 'no'
+              xml.itunes :duration, sermon.duration
+            end
+          end
+        end
+      end
+    end
+
+    def frontend_url
+      url = ::Addressable::URI.parse(frontend_url_for('/sermon'))
+      url.query_values = request.GET
+      url
     end
 
     # Use callbacks to share common setup or constraints between actions.
