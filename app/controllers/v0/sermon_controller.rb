@@ -84,9 +84,9 @@ module V0
     end
 
     def index_rss
-      title = "RRPC Sermons"
+      title = "Russell Reformed Presbyterian Church Sermons"
       description = "Sermons preached every Lord's Day, morning and evening, at the Russell Reformed Presbyterian Church"
-      image = frontend_url_for("podcast-image.png")
+      image = frontend_url_for("/podcast-image.png")
       author = "Russell RPC"
       email = "contact@russellrpc.org"
       keywords = "russell reformed Presbyterian church sermon christian scripture bible"
@@ -122,15 +122,15 @@ module V0
               url = frontend_url_for("/sermon/#{sermon.identifier}")
 
               xml.title sermon.title
-              xml.description description
-              xml.pubDate sermon.created_at.to_s(:rfc822)
+              xml.tag!('description') { xml.cdata! description }
+              xml.pubDate sermon.recorded_at.to_s(:rfc822)
               xml.enclosure :url => sermon.audio_url, :length => sermon.audio_size, :type => sermon.audio_mime_type
               xml.link url
               xml.guid({:isPermaLink => "false"}, url)
               xml.author sermon.speaker
               xml.itunes :author, sermon.speaker
-              xml.itunes :subtitle, description.truncate(150)
-              xml.itunes :summary, description
+              xml.tag!('itunes:subtitle') { xml.cdata! description.truncate(150) }
+              xml.tag!('itunes:summary') { xml.cdata! description }
               xml.itunes :explicit, 'no'
               xml.itunes :duration, sermon.duration
             end
