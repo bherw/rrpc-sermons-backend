@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'addressable', '~> 2.5'
+gem 'aws-sdk-s3', '~> 1.39'
 gem 'chewy', '~> 5.0'
 gem 'curb', '~> 0.9'
 gem 'elasticsearch', '~> 5.0'

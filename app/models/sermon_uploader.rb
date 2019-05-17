@@ -4,7 +4,6 @@ require 'json'
 
 class SermonUploader < Shrine
   plugin :add_metadata
-  plugin :default_storage, store: :store_large
   plugin :determine_mime_type
   plugin :processing
   plugin :validation_helpers
@@ -53,7 +52,7 @@ class SermonUploader < Shrine
 
     basename = [prefix, identifier, ext].compact.join
 
-    [type, id, name, context[:version], uid, basename].compact.join('/')
+    [type, id, name, [context[:version], uid].join('-'), basename].compact.join('/')
   end
 
   class AudioWaveformGenerationError; end

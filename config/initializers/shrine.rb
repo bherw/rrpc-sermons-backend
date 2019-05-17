@@ -13,27 +13,27 @@ Shrine::Attacher.delete { |data| DeleteJob.perform_async(data) }
 
 conf = Rails.application.config.app
 if conf['shrine_use_s3']
+  require 'shrine/storage/s3'
+
   s3_options = {
-    access_key_id:     conf['s3_access_key_id'],
-    secret_access_key: conf['s3_secret_access_key'],
+    public:            true,
+    access_key_id:     Rails.application.secrets.s3_access_key_id,
+    secret_access_key: Rails.application.secrets.s3_secret_access_key,
     region:            conf['s3_region'],
     bucket:            conf['s3_bucket'],
   }
 
   Shrine.storages = {
     cache:       Shrine::Storage::FileSystem.new('public', prefix: 'uploads/cache'),
-    store:       Shrine::Storage::FileSystem.new('public', prefix: 'uploads/store'),
-    store_large: Shrine::Storage::S3.new(prefix: 'store', **s3_options),
+    store_large: Shrine::Storage::FileSystem.new('public', prefix: 'uploads/store'),
+    store:       Shrine::Storage::S3.new(prefix: 'store', **s3_options),
   }
 
   Shrine.plugin :default_url_options,
-                store:       { host: RrpcApi.self_url },
-                store_large: lambda do |io, **_options|
-                  {
-                    host: conf['s3_public_url'],
-                    response_content_disposition: "attachment; filename=\"#{io.original_filename}\"",
-                  }
-                end
+                store_large: { host: RrpcApi.self_url },
+                store: lambda { |io, **_options|
+                  { response_content_disposition: ContentDisposition.attachment(io.original_filename) }
+                }
 else
   Shrine.storages = {
     cache: Shrine::Storage::FileSystem.new('public', prefix: 'uploads/cache'),
