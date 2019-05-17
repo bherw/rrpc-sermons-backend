@@ -93,9 +93,9 @@ module V0
 
       xml = ::Builder::XmlMarkup.new()
       xml.instruct! :xml, :version => "1.0"
-      xml.rss :version => "2.0", "xmlns:itunes" => "http://www.itunes.com/dtds/podcast-1.0.dtd",  "xmlns:media" => "http://search.yahoo.com/mrss/", "xmlns:atom" => "http://www.w3.org/2005/Atom" do
+      xml.rss :version => "2.0", "xmlns:itunes" => "http://www.itunes.com/dtds/podcast-1.0.dtd", "xmlns:media" => "http://search.yahoo.com/mrss/", "xmlns:atom" => "http://www.w3.org/2005/Atom" do
         xml.channel do
-          xml.tag!("atom:link",  "href"=>url_for(:only_path => false), "rel"=>"self", "type"=>"application/rss+xml") 
+          xml.tag!("atom:link", "href" => url_for(:only_path => false), "rel" => "self", "type" => "application/rss+xml")
           xml.title title
           xml.link frontend_url()
           xml.description description
