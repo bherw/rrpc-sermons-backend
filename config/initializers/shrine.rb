@@ -29,11 +29,8 @@ if conf['shrine_use_s3']
     store:       Shrine::Storage::S3.new(prefix: 'store', **s3_options),
   }
 
-  Shrine.plugin :default_url_options,
-                store_large: { host: RrpcApi.self_url },
-                store: lambda { |io, **_options|
-                  { response_content_disposition: ContentDisposition.attachment(io.original_filename) }
-                }
+  Shrine.plugin :default_url_options, store_large: { host: RrpcApi.self_url }
+  Shrine.plugin :upload_options, store: { content_disposition: 'attachment'}
 else
   Shrine.storages = {
     cache: Shrine::Storage::FileSystem.new('public', prefix: 'uploads/cache'),
