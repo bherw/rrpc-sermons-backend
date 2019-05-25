@@ -52,4 +52,10 @@ class Sermon < ApplicationRecord
   def to_param
     identifier
   end
+
+  validates :title, presence: true
+  validates :scripture_reading, presence: true
+  validates :speaker, presence: true
+  validates :identifier, presence: true
+  validates :recorded_at, presence: true
 end
