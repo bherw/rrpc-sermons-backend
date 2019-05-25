@@ -44,6 +44,12 @@ module RrpcApi
     Rails.configuration.app.fetch('self_url')
   end
 
+  def self.sidekiq_redis_config
+    Rails.configuration.app.fetch('sidekiq_redis_config') do
+      { url: 'redis://localhost:6379/0', namespace: "rrpc_api_sidekiq_#{Rails.env}" }
+    end
+  end
+
   def self.webapp_url
     Rails.configuration.app.fetch('webapp_url')
   end
