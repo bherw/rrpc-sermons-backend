@@ -9,7 +9,6 @@ gem 'has_permalink'
 gem 'kaminari', '~> 0.17'
 gem 'pg', '~> 0.19'
 gem 'puma', '~> 3.6'
-gem 'rackheader', '~> 0.0'
 gem 'rails', '~> 5.0'
 gem 'redis-namespace', '~> 1.5'
 gem 'shrine', '~> 2.5'
@@ -24,9 +23,6 @@ gem 'taglib-ruby', '~> 0.7'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-
-# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
