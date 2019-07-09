@@ -3,8 +3,16 @@ class Sermon < ApplicationRecord
 
   update_index 'sermons#sermon', :self
 
-  def as_json(_opts)
-    super except: [:audio_data], methods: [:audio_url, :audio_waveform_url, :duration]
+  validates :title, presence: true
+  validates :scripture_reading, presence: true
+  validates :speaker, presence: true
+  validates :identifier, presence: true
+  validates :recorded_at, presence: true
+
+  belongs_to :speaker
+
+  def as_json(options)
+    super(options.merge(except: [:audio_data], methods: [:audio_url, :audio_waveform_url, :duration]))
   end
 
   def audio_mime_type
@@ -52,10 +60,4 @@ class Sermon < ApplicationRecord
   def to_param
     identifier
   end
-
-  validates :title, presence: true
-  validates :scripture_reading, presence: true
-  validates :speaker, presence: true
-  validates :identifier, presence: true
-  validates :recorded_at, presence: true
 end

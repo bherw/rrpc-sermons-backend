@@ -10,23 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161124231629) do
+ActiveRecord::Schema.define(version: 2016_11_24_231629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "sermons", force: :cascade do |t|
-    t.text     "audio_data"
-    t.string   "identifier"
+  create_table "sermons", id: :serial, force: :cascade do |t|
+    t.text "audio_data"
+    t.string "identifier"
     t.datetime "recorded_at"
-    t.string   "series"
-    t.string   "title"
-    t.string   "scripture_focus"
-    t.string   "scripture_reading"
-    t.boolean  "scripture_reading_might_be_focus"
-    t.string   "speaker"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.string "series"
+    t.string "title"
+    t.string "scripture_focus"
+    t.string "scripture_reading"
+    t.boolean "scripture_reading_might_be_focus"
+    t.string "speaker"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
