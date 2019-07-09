@@ -1,23 +1,30 @@
 source 'https://rubygems.org'
 
-gem 'addressable', '~> 2.5'
-gem 'aws-sdk-s3', '~> 1.39'
-gem 'chewy', '~> 5.0'
-gem 'curb', '~> 0.9'
-gem 'elasticsearch', '~> 5.0'
-gem 'has_permalink'
-gem 'kaminari', '~> 0.17'
-gem 'pg', '~> 0.19'
+# Core
 gem 'puma', '~> 3.6'
 gem 'rails', '~> 5.0'
-gem 'redis-namespace', '~> 1.5'
-gem 'shrine', '~> 2.5'
-gem 'sidekiq', '~> 4.2'
-gem 'sidekiq-scheduler', '~> 2.0'
-gem 'taglib-ruby', '~> 0.7'
+gem 'addressable', '~> 2.5' # Address logic
 
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
+# Database
+gem 'elasticsearch', '~> 5.0'
+gem 'chewy', '~> 5.0'
+gem 'pg', '~> 0.19'
+gem 'redis-namespace', '~> 1.5'
+
+# Background tasks
+gem 'sidekiq', '~> 5.0'
+gem 'sidekiq-scheduler', '~> 3.0'
+
+# Attachments
+gem 'aws-sdk-s3', '~> 1.39'
+gem 'shrine', '~> 2.5'
+gem 'taglib-ruby', '~> 0.7' # audio file duration metadata
+
+# Misc
+gem 'friendly_id', '~> 5.2.4' # slug-urls
+gem 'curb', '~> 0.9' # Biblesearch proxy
+gem 'kaminari', '~> 0.17' # Pagination
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
