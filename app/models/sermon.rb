@@ -10,6 +10,7 @@ class Sermon < ApplicationRecord
   validates :recorded_at, presence: true
 
   belongs_to :speaker
+  belongs_to :series
 
   def as_json(options)
     super(options.merge(except: [:audio_data], methods: [:audio_url, :audio_waveform_url, :duration]))
