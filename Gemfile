@@ -21,8 +21,10 @@ gem 'shrine', '~> 2.5'
 gem 'taglib-ruby', '~> 0.7' # audio file duration metadata
 
 # Misc
-gem 'friendly_id', '~> 5.2.4' # slug-urls
 gem 'curb', '~> 0.9' # Biblesearch proxy
+gem 'friendly_id', '~> 5.2.4' # slug-urls
+gem 'graphql', '~> 1.9.7'
+gem 'graphql-batch'
 gem 'kaminari', '~> 0.17' # Pagination
 
 # Use ActiveModel has_secure_password

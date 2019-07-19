@@ -8,4 +8,8 @@ class SermonsIndex < Chewy::Index
     field :scripture_reading_might_be_focus, type: 'boolean'
     field :year, type: 'short', value: ->(sermon) { sermon.recorded_at.year }
   end
+
+  class Query; end
+
+  GraphQL::Relay::BaseConnection.register_connection_implementation(SermonsIndex::Query, Types::ChewyRelationConnection)
 end

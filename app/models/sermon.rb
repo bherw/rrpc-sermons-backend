@@ -52,6 +52,10 @@ class Sermon < ApplicationRecord
     scripture_focus || scripture_reading
   end
 
+  def slug
+    identifier
+  end
+
   def title_with_series
     res = title
     res += " — " + series if series
