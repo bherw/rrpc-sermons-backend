@@ -5,7 +5,7 @@ class Speaker < ApplicationRecord
   update_index 'speakers#speaker', :self
 
   friendly_id :name, use: :slugged
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 
   def photo_url
     photo ? photo.url : nil
