@@ -45,7 +45,7 @@ module Types
     end
 
     def sermons(filter: nil, search: nil, order: 'newest_first')
-      if search
+      if search && !search.empty?
         if filter
           raise GraphQL::ExecutionError, "Search and filter arguments are mutually exclusive"
         end
