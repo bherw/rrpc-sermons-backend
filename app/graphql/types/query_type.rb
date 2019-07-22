@@ -54,26 +54,30 @@ module Types
         nodes = nodes.order(@@sermons_es_orders[order])
         nodes
       else
-        scope = apply_filter(Sermon.all, filter) do |scope|
-          if filter[:identifier]
-            scope = scope.where(identifier: filter[:identifier])
-          end
+        scope = Sermon.all
 
-          if filter[:title]
-            scope = scope.where(title: filter[:title])
-          end
+        if filter
+          scope = apply_filter(Sermon.all, filter) do |scope|
+            if filter[:identifier]
+              scope = scope.where(identifier: filter[:identifier])
+            end
 
-          if filter[:speaker_id]
-            type_name, slug = filter[:speaker_id].split('/')
-            scope = scope.joins(:speaker).where('speakers.slug = ?', slug)
-          end
+            if filter[:title]
+              scope = scope.where(title: filter[:title])
+            end
 
-          if filter[:series_id]
-            type_name, slug = filter[:series_id].split('/')
-            scope = scope.joins(:series).where('series.slug = ?', slug)
-          end
+            if filter[:speaker_id]
+              type_name, slug = filter[:speaker_id].split('/')
+              scope = scope.joins(:speaker).where('speakers.slug = ?', slug)
+            end
 
-          scope
+            if filter[:series_id]
+              type_name, slug = filter[:series_id].split('/')
+              scope = scope.joins(:series).where('series.slug = ?', slug)
+            end
+
+            scope
+          end
         end
 
         scope = scope.order(@@sermons_ar_orders[order])
