@@ -1,15 +1,5 @@
 module Types
   class QueryType < Types::BaseObject
-    @@sermons_ar_orders = {
-      'newest_first' => 'recorded_at DESC',
-      'oldest_first' => :recorded_at,
-    }
-
-    @@sermons_es_orders = {
-      'newest_first' => { recorded_at: :desc },
-      'oldest_first' => { recorded_at: :asc },
-    }
-
     class SermonFilter < ::Types::BaseInputObject
       argument :OR, [self], required: false
       argument :identifier, String, required: false
@@ -20,13 +10,6 @@ module Types
 
     class QueryParsingError < RrpcApi::Error; end
 
-    OrderEnum = GraphQL::EnumType.define do
-      name 'SermonOrder'
-
-      value 'newest_first'
-      value 'oldest_first'
-    end
-
     add_field GraphQL::Types::Relay::NodeField
     add_field GraphQL::Types::Relay::NodesField
 
@@ -35,7 +18,7 @@ module Types
     field :sermons, SermonConnectionType, null: false do
       argument :filter, type: SermonFilter, required: false
       argument :search, type: String, required: false
-      argument :order, type: OrderEnum, required: false
+      argument :order, type: SermonOrder, required: false
     end
 
     field :speakers, SeriesType.connection_type, null: false
@@ -51,7 +34,7 @@ module Types
         end
 
         nodes = SermonsIndex.query(query_string: { query: search, default_operator: 'and' })
-        nodes = nodes.order(@@sermons_es_orders[order])
+        nodes = nodes.order(SermonOrder.order(:es, order))
         nodes
       else
         scope = Sermon.all
@@ -80,8 +63,8 @@ module Types
           end
         end
 
-        scope = scope.order(@@sermons_ar_orders[order])
 
+        scope = scope.order(SermonOrder.order(:ar, order))
         scope
       end
     end
