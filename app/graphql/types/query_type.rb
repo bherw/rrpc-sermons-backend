@@ -37,33 +37,7 @@ module Types
         nodes = nodes.order(SermonOrder.order(:es, order))
         nodes
       else
-        scope = Sermon.all
-
-        if filter
-          scope = apply_filter(Sermon.all, filter) do |scope|
-            if filter[:identifier]
-              scope = scope.where(identifier: filter[:identifier])
-            end
-
-            if filter[:title]
-              scope = scope.where(title: filter[:title])
-            end
-
-            if filter[:speaker_id]
-              type_name, slug = filter[:speaker_id].split('/')
-              scope = scope.joins(:speaker).where('speakers.slug = ?', slug)
-            end
-
-            if filter[:series_id]
-              type_name, slug = filter[:series_id].split('/')
-              scope = scope.joins(:series).where('series.slug = ?', slug)
-            end
-
-            scope
-          end
-        end
-
-
+        scope = apply_sermon_filter(Sermon.all, filter)
         scope = scope.order(SermonOrder.order(:ar, order))
         scope
       end
@@ -71,6 +45,34 @@ module Types
 
     def speakers
       Speaker.all
+    end
+
+    def apply_sermon_filter(scope, filter)
+      if filter
+        scope = apply_filter(Sermon.all, filter) do |scope|
+          if filter[:identifier]
+            scope = scope.where(identifier: filter[:identifier])
+          end
+
+          if filter[:title]
+            scope = scope.where(title: filter[:title])
+          end
+
+          if filter[:speaker_id]
+            type_name, slug = filter[:speaker_id].split('/')
+            scope = scope.joins(:speaker).where('speakers.slug = ?', slug)
+          end
+
+          if filter[:series_id]
+            type_name, slug = filter[:series_id].split('/')
+            scope = scope.joins(:series).where('series.slug = ?', slug)
+          end
+
+          scope
+        end
+      end
+
+      scope
     end
 
     def apply_filter(scope, value)
