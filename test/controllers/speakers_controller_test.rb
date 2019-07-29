@@ -1,21 +1,29 @@
 require 'test_helper'
 
 class SpeakersControllerTest < ActionDispatch::IntegrationTest
+  indexing :bypass
+  assert_requires_auth :speaker, [:create, :update, :destroy]
+
   setup do
-    @speaker = speakers(:one)
+    @speaker = create(:speaker)
   end
 
   test "should get index" do
-    get speakers_url, as: :json
+    get speaker_index_url, as: :json
     assert_response :success
   end
 
   test "should create speaker" do
     assert_difference('Speaker.count') do
-      post speakers_url, params: { speaker: { description: @speaker.description, name: @speaker.name, photo: @speaker.photo, synonyms: @speaker.synonyms } }, as: :json
-    end
+      post speaker_index_url,
+           params: {
+             access_key: Rails.application.secrets.admin_access_key,
+             speaker: attributes_for(:speaker)
+           },
+           as: :json
 
-    assert_response 201
+      assert_response 201
+    end
   end
 
   test "should show speaker" do
@@ -24,15 +32,30 @@ class SpeakersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update speaker" do
-    patch speaker_url(@speaker), params: { speaker: { description: @speaker.description, name: @speaker.name, photo: @speaker.photo, synonyms: @speaker.synonyms } }, as: :json
+    patch speaker_url(@speaker),
+          params: {
+            access_key: Rails.application.secrets.admin_access_key,
+            speaker: attributes_for(:speaker)
+          },
+          as: :json
+
     assert_response 200
   end
 
   test "should destroy speaker" do
     assert_difference('Speaker.count', -1) do
-      delete speaker_url(@speaker), as: :json
+      delete speaker_url(@speaker),
+             params: { access_key: Rails.application.secrets.admin_access_key },
+             as: :json
+      assert_response 204
     end
+  end
 
-    assert_response 204
+  def speaker_index_url
+    '/v0/speakers'
+  end
+
+  def speaker_url(speaker)
+    "/v0/speakers/#{speaker.slug}"
   end
 end
