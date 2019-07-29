@@ -17,23 +17,19 @@ class Sermon < ApplicationRecord
   end
 
   def audio_mime_type
-    audio.is_a?(Hash) ? audio[:original].mime_type : audio.mime_type
+    audio_original.mime_type
+  end
+
+  def audio_original
+    audio.is_a?(Hash) ? audio[:original] : audio
   end
 
   def audio_url
-    if audio.is_a?(Hash)
-      audio[:original].url
-    else
-      audio.url
-    end
+    audio_original.url
   end
 
   def audio_size
-    if audio.is_a?(Hash)
-      audio[:original].size
-    else
-      audio.size
-    end
+    audio_original.size
   end
 
   def audio_waveform_url
@@ -41,11 +37,7 @@ class Sermon < ApplicationRecord
   end
 
   def duration
-    if audio.is_a?(Hash)
-      audio[:original].duration
-    else
-      audio.duration
-    end
+    audio_original.duration
   end
 
   def scripture
