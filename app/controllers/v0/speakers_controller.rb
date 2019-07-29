@@ -2,19 +2,19 @@ module V0
   class SpeakersController < ApplicationController
     before_action :set_speaker, only: [:show, :update, :destroy]
 
-    # GET /speaker
+    # GET /v0/speakers
     def index
       @speakers = Speaker.all
 
       render json: @speakers
     end
 
-    # GET /speaker/1
+    # GET /v0/speakers/1
     def show
       render json: { data: @sermon }
     end
 
-    # POST /speaker
+    # POST /v0/speakers
     def create
       @speaker = Speaker.new(speaker_params)
       authorize @speaker
@@ -26,7 +26,7 @@ module V0
       end
     end
 
-    # PATCH/PUT /speaker/1
+    # PATCH/PUT /v0/speakers/1
     def update
       authorize @speaker
       if @speaker.update(speaker_params)
@@ -36,22 +36,24 @@ module V0
       end
     end
 
-    # DELETE /speaker/1
+    # DELETE /v0/speakers/1
     def destroy
       authorize @speaker
       @speaker.destroy
     end
 
     private
-
-    # Use callbacks to share common setup or constraints between actions.
     def set_speaker
-      @speaker = params[:id] =~ /^\d+$/ ? Speaker.find(params[:id]) : Speaker.friendly.find(slug: params[:id])
+      @speaker = Speaker.friendly.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def speaker_params
       params.require(:speaker).permit(:name, :aliases, :photo, :description)
+    end
+
+    def speaker_url(speaker)
+      "v0/speakers/#{speaker.slug}"
     end
   end
 end
