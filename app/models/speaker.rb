@@ -5,7 +5,7 @@ class Speaker < ApplicationRecord
   update_index 'speakers#speaker', :self
 
   friendly_id :name, use: :slugged
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
 
   has_many :sermons, -> { order(:recorded_at) }
 
