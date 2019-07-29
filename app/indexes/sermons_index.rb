@@ -9,6 +9,8 @@ class SermonsIndex < Chewy::Index
     field :year, type: 'short', value: ->(sermon) { sermon.recorded_at.year }
   end
 
+  # XXX: Chewy will redefine Query later, but we need to do it here in order to register the
+  # connection implementation.
   class Query; end
 
   GraphQL::Relay::BaseConnection.register_connection_implementation(SermonsIndex::Query, Types::ChewyRelationConnection)
