@@ -1,4 +1,4 @@
-class SeriesController < ApplicationController
+class V0::SeriesController < ApplicationController
   before_action :set_series, only: [:show, :update, :destroy]
 
   # GET /series
@@ -42,13 +42,16 @@ class SeriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_series
-      @series = params[:id] =~ /^\d+$/ ? Series.find(params[:id]) : Series.friendly.find(slug: params[:id])
+      @series = Series.friendly.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def series_params
-      params.require(:series).permit(:name, :slug, :speaker_id)
+      params.require(:series).permit(:name, :speaker_id)
+    end
+
+    def series_url(series)
+      "v0/series/{series.slug}"
     end
 end
