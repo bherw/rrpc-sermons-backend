@@ -1,13 +1,13 @@
 require 'active_support/builder'
 
 module V0
-  class SermonController < ApplicationController
+  class SermonsController < ApplicationController
     include ActionController::MimeResponds
     include ActionView::Helpers::AtomFeedHelper
 
     before_action :set_sermon, only: [:show, :update, :destroy]
 
-    # GET /sermon
+    # GET /sermons
     def index
       @sermons = SermonSearch.new(params).load
 
@@ -20,12 +20,12 @@ module V0
       render json: { errors: e.message }
     end
 
-    # GET /sermon/1
+    # GET /sermons/1
     def show
       render_json @sermon
     end
 
-    # POST /sermon
+    # POST /sermons
     def create
       @sermon = Sermon.new(sermon_params)
       authorize @sermon
@@ -37,7 +37,7 @@ module V0
       end
     end
 
-    # PATCH/PUT /sermon/1
+    # PATCH/PUT /sermons/1
     def update
       authorize @sermon
       if @sermon.update(sermon_params)
@@ -47,7 +47,7 @@ module V0
       end
     end
 
-    # DELETE /sermon/1
+    # DELETE /sermons/1
     def destroy
       authorize @sermon
       @sermon.destroy
@@ -157,7 +157,7 @@ module V0
     end
 
     def sermon_url(sermon)
-      url_for "v0/sermon/#{sermon.identifier}"
+      url_for "v0/sermons/#{sermon.identifier}"
     end
   end
 end
