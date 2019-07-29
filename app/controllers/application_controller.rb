@@ -1,10 +1,12 @@
+include ActiveSupport::SecurityUtils
+
 class ApplicationController < ActionController::API
   rescue_from RrpcApi::NotAuthorizedError, with: :render_not_authorized
 
   def authorize(_what)
-    access_key = params[:access_key]
-    secrets = Rails.application.secrets
-    raise RrpcApi::NotAuthorizedError unless access_key == secrets.admin_access_key
+    access_key = Rails.application.secrets.admin_access_key
+    raise RuntimeError, "Missing secrets.admin_access_key" unless !access_key.nil? && !access_key.empty?
+    raise RrpcApi::NotAuthorizedError unless secure_compare(access_key, params[:access_key].to_s)
   end
 
   # Because we might be at api.foo.com or foo.com/api
