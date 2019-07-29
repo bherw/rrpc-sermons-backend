@@ -9,6 +9,7 @@ module Types
     field :recorded_at, GraphQL::Types::ISO8601DateTime, null: false
     field :audio_url, String, null: false
     field :audio_waveform_url, String, null: true
+    field :duration, Int, null: false
 
     def series
       object.series_id ? ::RecordLoader.for(Series).load(object.series_id) : nil
