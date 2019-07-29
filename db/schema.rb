@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_09_202300) do
+ActiveRecord::Schema.define(version: 2019_07_25_213813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2019_07_09_202300) do
     t.bigint "speaker_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sermons_count", default: 0, null: false
     t.index ["slug"], name: "index_series_on_slug", unique: true
     t.index ["speaker_id"], name: "index_series_on_speaker_id"
   end
@@ -38,6 +39,7 @@ ActiveRecord::Schema.define(version: 2019_07_09_202300) do
     t.datetime "updated_at", null: false
     t.integer "speaker_id"
     t.bigint "series_id"
+    t.integer "series_index"
     t.index ["series_id"], name: "index_sermons_on_series_id"
     t.index ["speaker_id"], name: "index_sermons_on_speaker_id"
   end

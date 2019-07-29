@@ -4,6 +4,7 @@ class SermonsIndex < Chewy::Index
     field :recorded_at, type: 'date'
     field :title, :scripture, :scripture_focus, :scripture_reading
     field :series, value: ->(sermon) { sermon.series ? sermon.series.name : nil }
+    field :series_index, type: 'short'
     field :speaker, value: ->(sermon) { sermon.speaker.name }
     field :scripture_reading_might_be_focus, type: 'boolean'
     field :year, type: 'short', value: ->(sermon) { sermon.recorded_at.year }

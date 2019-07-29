@@ -10,7 +10,41 @@ class Sermon < ApplicationRecord
   validates :recorded_at, presence: true
 
   belongs_to :speaker
-  belongs_to :series
+  belongs_to :series, counter_cache: true, optional: true
+
+  validate :that_series_has_the_same_speaker
+
+  before_save do
+    if series.nil?
+      self.series_index = nil
+    end
+  end
+
+  after_create do
+    if !series.nil?
+      series.update_indexes
+      reload
+    end
+  end
+
+  after_update do
+    if saved_change_to_series_id?
+      before, after = saved_change_to_series_id
+      if before
+        Series.find(before).update_indexes
+      end
+      if after
+        series.update_indexes
+        reload
+      end
+    end
+  end
+
+  after_destroy do
+    if !series.nil?
+      series.update_indexes
+    end
+  end
 
   def as_json(options)
     super(options.merge(except: [:audio_data], methods: [:audio_url, :audio_waveform_url, :duration]))

@@ -7,6 +7,8 @@ class Speaker < ApplicationRecord
   friendly_id :name, use: :slugged
   validates :name, presence: true, uniqueness: true
 
+  has_many :sermons, -> { order(:recorded_at) }
+
   def photo_url
     photo ? photo.url : nil
   end

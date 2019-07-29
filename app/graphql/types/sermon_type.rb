@@ -6,6 +6,7 @@ module Types
     field :scripture_focus, String, null: true
     field :speaker, Types::SpeakerType, null: false
     field :series, Types::SeriesType, null: true
+    field :series_index, Int, null: true
     field :recorded_at, GraphQL::Types::ISO8601DateTime, null: false
     field :audio_url, String, null: false
     field :audio_waveform_url, String, null: true
