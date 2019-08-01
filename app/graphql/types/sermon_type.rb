@@ -1,6 +1,6 @@
 module Types
   class SermonType < Types::BaseObject
-    field :identifier, ID, null: false
+    field :identifier, String, null: false
     field :title, String, null: false
     field :scripture_reading, String, null: false
     field :scripture_focus, String, null: true
