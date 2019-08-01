@@ -13,11 +13,14 @@ module Types
     field :duration, Int, null: false
 
     def series
-      object.series_id ? ::RecordLoader.for(Series).load(object.series_id) : nil
+      return nil unless object.series_id
+      return object.series if object.association_cached?(:series)
+      CacheQL::RecordLoader.for(Series).load(object.series_id)
     end
 
     def speaker
-      ::RecordLoader.for(Speaker).load(object.speaker_id)
+      return object.speaker if object.association_cached?(:speaker)
+      CacheQL::RecordLoader.for(Speaker).load(object.speaker_id)
     end
   end
 end
