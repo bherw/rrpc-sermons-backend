@@ -2,7 +2,7 @@ include ActionDispatch::TestProcess
 
 FactoryBot.define do
   factory :sermon do
-    title { Faker::Lorem.sentence(2, true, 4) }
+    title { Faker::Lorem.sentence() }
     sequence(:identifier) { |n| "2010-01-#{n}AM" }
     sequence(:scripture_reading) { |n| "Scripture #{n}" }
     recorded_at { Time.now }

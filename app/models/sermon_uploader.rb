@@ -8,6 +8,7 @@ class SermonUploader < Shrine
   plugin :processing
   plugin :validation_helpers
   plugin :versions
+  plugin :pretty_location
 
   Attacher.validate do
     validate_max_size 50.megabytes
@@ -41,7 +42,7 @@ class SermonUploader < Shrine
 
   def generate_location(io, context)
     if context[:record]
-      type       = class_location(context[:record].class) if context[:record].class.name
+      type       = record_namespace(context[:record]) if context[:record].class.name
       id         = context[:record].id if context[:record].respond_to?(:id)
       identifier = context[:record].identifier
     end
