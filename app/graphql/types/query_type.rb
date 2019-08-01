@@ -15,7 +15,7 @@ module Types
 
     field :series, SeriesType.connection_type, null: false
 
-    field :sermons, SermonConnectionType, null: false do
+    field :sermons, SermonConnectionType, null: false, extras: [:lookahead] do
       argument :filter, type: SermonFilter, required: false
       argument :search, type: String, required: false
       argument :order, type: SermonOrder, required: false
@@ -27,7 +27,7 @@ module Types
       Series.all
     end
 
-    def sermons(filter: nil, search: nil, order: 'newest_first')
+    def sermons(filter: nil, search: nil, order: 'newest_first', lookahead:)
       if search && !search.empty?
         if filter
           raise GraphQL::ExecutionError, "Search and filter arguments are mutually exclusive"
@@ -39,6 +39,12 @@ module Types
       else
         scope = apply_sermon_filter(Sermon.all, filter)
         scope = scope.order(SermonOrder.order(:ar, order))
+        if lookahead.selection(:nodes).selects?(:speaker) || lookahead.selection(:edges).selection(:node).selects(:speaker)
+          scope = scope.includes(:speaker)
+        end
+        if lookahead.selection(:nodes).selects?(:series) || lookahead.selection(:edges).selection(:node).selects(:series)
+          scope = scope.includes(:series)
+        end
         scope
       end
     end
