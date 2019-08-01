@@ -82,6 +82,12 @@ class Sermon < ApplicationRecord
     identifier
   end
 
+  def that_series_has_the_same_speaker
+    if !series.nil? && series.speaker_id != speaker_id
+      errors.add(:series, 'series speaker must be the same as sermon speaker')
+    end
+  end
+
   def title_with_series
     res = title
     res += " — " + series if series
