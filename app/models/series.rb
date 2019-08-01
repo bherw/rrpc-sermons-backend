@@ -18,7 +18,7 @@ class Series < ApplicationRecord
     index = 0
     sermons.each do |sermon|
       index += 1
-      sermon.update!(series_index: index)
+      sermon.update_columns(series_index: index)
     end
   end
 end

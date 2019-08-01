@@ -20,9 +20,9 @@ class CreateSpeakers < ActiveRecord::Migration[5.0]
       Sermon.find_each do |sermon|
         speaker = Speaker.find_by_name(sermon.speaker_name)
         if not speaker
-          speaker = Speaker.new(name: sermon.speaker_name)
+          speaker = Speaker.create(name: sermon.speaker_name)
         end
-        sermon.update(speaker: speaker)
+        sermon.update_columns(speaker_id: speaker.id)
       end
     end
   end
