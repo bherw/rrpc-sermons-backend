@@ -5,12 +5,12 @@ class V0::SeriesController < ApplicationController
   def index
     @series = Series.all
 
-    render json: @series
+    render json: { data: { results: @series, total: @series.count } }
   end
 
   # GET /series/1
   def show
-    render json: @series
+    render json: { data: @series }
   end
 
   # POST /series
@@ -19,9 +19,9 @@ class V0::SeriesController < ApplicationController
     authorize @series
 
     if @series.save
-      render json: @series, status: :created, location: @series
+      render json: { data: @series }, status: :created, location: @series
     else
-      render json: @series.errors, status: :unprocessable_entity
+      render json: { errors: @series.errors }, status: :unprocessable_entity
     end
   end
 
@@ -29,9 +29,9 @@ class V0::SeriesController < ApplicationController
   def update
     authorize @series
     if @series.update(series_params)
-      render json: @series
+      render json: { data: @series }
     else
-      render json: @series.errors, status: :unprocessable_entity
+      render json: { errors: @series.errors }, status: :unprocessable_entity
     end
   end
 

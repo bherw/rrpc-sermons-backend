@@ -6,12 +6,12 @@ module V0
     def index
       @speakers = Speaker.all
 
-      render json: @speakers
+      render json: { data: { results: @speakers, total: @speakers.count }}
     end
 
     # GET /v0/speakers/1
     def show
-      render json: { data: @sermon }
+      render json: { data: @speaker }
     end
 
     # POST /v0/speakers
@@ -20,7 +20,7 @@ module V0
       authorize @speaker
 
       if @speaker.save
-        render json: { data: @sermon }, status: :created, location: @speaker
+        render json: { data: @speaker }, status: :created, location: @speaker
       else
         render json: { errors: @speaker.errors }, status: :unprocessable_entity
       end
@@ -30,7 +30,7 @@ module V0
     def update
       authorize @speaker
       if @speaker.update(speaker_params)
-        render json: { data: @sermon }
+        render json: { data: @speaker }
       else
         render json: { errors: @speaker.errors }, status: :unprocessable_entity
       end
