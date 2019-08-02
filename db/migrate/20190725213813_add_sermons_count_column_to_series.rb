@@ -1,14 +1,15 @@
 class AddSermonsCountColumnToSeries < ActiveRecord::Migration[5.2]
-  def up
+  def change
     add_column :series, :sermons_count, :int, null: false, default: 0
 
-    # Avoid rails validation to initialize this readonly field.
-    Series.includes(:sermons).find_each do |series|
-      Series.where(id: series.id).update_all(sermons_count: Sermon.where(series_id: series.id).count)
+    reversible do |dir|
+      dir.up { data }
     end
   end
 
-  def down
-    remove_column :series, :sermons_count
+  def data
+    execute <<-SQL.squish
+      UPDATE series SET sermons_count = (SELECT count(1) FROM sermons WHERE sermons.series_id = series.id)
+    SQL
   end
 end
