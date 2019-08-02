@@ -13,37 +13,31 @@ class CreateSeries < ActiveRecord::Migration[5.2]
     add_reference :sermons, :series
     add_foreign_key :sermons, :series
 
-
-    Chewy.strategy :atomic do
-      Sermon.find_each do |sermon|
-        if sermon.series_name
-          series = Series.find_by_name(sermon.series_name)
-          if not series
-            series = Series.create(name: sermon.series_name, speaker: sermon.speaker)
-          end
-          sermon.update_columns(series_id: series.id)
-        end
-      end
+    reversible do |dir|
+      dir.up { data }
     end
 
     remove_column :sermons, :series_name
   end
 
-  def down
-    add_column :sermons, :series_name, :string
+  def data
+    execute <<~SQL
+      INSERT INTO series (name, speaker_id, slug, created_at, updated_at)
+      SELECT DISTINCT series_name, speaker_id, series_name, now(), now() FROM sermons WHERE series_name IS NOT NULL;
 
-    Chewy.strategy :atomic do
-      Sermon.find_each do |sermon|
-        if sermon.series
-          sermon.update_columns(series_name: sermon.series.name)
-        end
+      UPDATE sermons SET series_id = (
+        SELECT id FROM series WHERE name = sermons.series_name AND series.speaker_id = sermons.speaker_id
+      );
+    SQL
+
+    # Generate slugs
+    Chewy.strategy :bypass do
+      Series.find_each do |series|
+        series.slug = nil
+        series.save!
       end
     end
 
-    remove_foreign_key :sermons, :series
-    remove_reference :sermons, :series
-    remove_index :series, :slug
-    drop_table :series
-    rename_column :sermons, :series_name, :series
+    SeriesIndex.reset!
   end
 end

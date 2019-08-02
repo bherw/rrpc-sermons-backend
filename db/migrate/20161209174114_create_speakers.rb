@@ -1,5 +1,5 @@
 class CreateSpeakers < ActiveRecord::Migration[5.0]
-  def up
+  def change
     create_table :speakers do |t|
       t.string :name, null: false
       t.string :aliases, array: true, default: []
@@ -16,24 +16,27 @@ class CreateSpeakers < ActiveRecord::Migration[5.0]
     add_reference :sermons, :speaker, index: true
     add_foreign_key :sermons, :speakers
 
-    Chewy.strategy :atomic do
-      Sermon.find_each do |sermon|
-        speaker = Speaker.find_by_name(sermon.speaker_name)
-        if not speaker
-          speaker = Speaker.create(name: sermon.speaker_name)
-        end
-        sermon.update_columns(speaker_id: speaker.id)
-      end
+    reversible do |dir|
+      dir.up { data }
     end
   end
 
-  def down
-    remove_foreign_key :sermons, :speakers
-    remove_reference :sermons, :speaker
-    remove_index :speakers, :slug
-    remove_index :speakers, :name
-    drop_table :speakers
+  def data
+    execute <<~SQL
+      INSERT INTO speakers (name, slug, created_at, updated_at)
+      SELECT DISTINCT speaker_name, speaker_name, now(), now() FROM sermons;
 
-    rename_column :sermons, :speaker_name, :speaker
+      UPDATE sermons SET speaker_id = (SELECT id FROM speakers WHERE name = sermons.speaker_name);
+    SQL
+
+    # Generate slugs
+    Chewy.strategy :bypass do
+      Speaker.find_each do |speaker|
+        speaker.slug = nil
+        speaker.save!
+      end
+    end
+
+    SpeakersIndex.reset!
   end
 end
