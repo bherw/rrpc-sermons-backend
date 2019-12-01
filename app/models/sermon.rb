@@ -90,7 +90,7 @@ class Sermon < ApplicationRecord
 
   def title_with_series
     res = title
-    res += " — " + series if series
+    res += " — " + series.name if !series.nil?
     res
   end
 

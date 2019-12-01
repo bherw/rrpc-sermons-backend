@@ -62,17 +62,17 @@ module V0
         feed.title('RRPC Sermons')
         feed.updated(@sermons[0].created_at) unless @sermons.empty?
 
-        @sermons.each do |sermon|
+        @sermons.includes(:speaker, :series).each do |sermon|
           feed.entry(sermon, url: frontend_url_for("/sermon/#{sermon.identifier}")) do |entry|
             entry.title(sermon.title)
             content = '<p>' + sermon.title_with_series + '<br>' +
                           sermon.scripture_reading + '<br>' +
-                          sermon.speaker + '<br>' +
+                          sermon.speaker.name + '<br>' +
                           sermon.recorded_at.to_formatted_s(:long) + '</p>'
             entry.content(content, 'html')
 
             entry.author do |author|
-              author.name(sermon.speaker)
+              author.name(sermon.speaker.name)
             end
 
             entry.link(href: sermon.audio_url,
@@ -115,7 +115,7 @@ module V0
             xml.itunes :category, :text => 'Christianity'
           end
 
-          @sermons.each do |sermon|
+          @sermons.includes(:speaker, :series).each do |sermon|
             xml.item do
               description = "Scripture reading: " + sermon.scripture
               url = frontend_url_for("/sermon/#{sermon.identifier}")
@@ -127,7 +127,7 @@ module V0
               xml.link url
               xml.guid({:isPermaLink => "false"}, url)
               xml.author sermon.speaker
-              xml.itunes :author, sermon.speaker
+              xml.itunes :author, sermon.speaker.name
               xml.itunes :subtitle, description.truncate(150)
               xml.itunes :summary, description
               xml.itunes :explicit, 'no'
