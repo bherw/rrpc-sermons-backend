@@ -1,6 +1,6 @@
 # Description
 
-The backend service powering [http://sermons.russellrpc.org/](http://sermons.russellrpc.org/).
+The backend service powering [http://sermons.russellrpc.org/](http://sermons.russellrpc.org/). [Frontend](https://github.com/bherw/rrpc-sermons-frontend)
 
 - REST API for sermons, series, speakers
 - GraphQL API
