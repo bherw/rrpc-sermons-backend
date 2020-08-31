@@ -25,7 +25,7 @@ gem 'curb', '~> 0.9' # Biblesearch proxy
 gem 'friendly_id', '~> 5.2.4' # slug-urls
 gem 'graphql', '~> 1.9'
 gem 'graphql-batch', '~> 0.4.3'
-gem 'kaminari', '~> 0.17' # Pagination
+gem 'kaminari', '~> 1.2' # Pagination
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
