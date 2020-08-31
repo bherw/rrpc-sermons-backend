@@ -24,8 +24,7 @@ gem 'taglib-ruby', '~> 0.7' # audio file duration metadata
 gem 'curb', '~> 0.9' # Biblesearch proxy
 gem 'friendly_id', '~> 5.2.4' # slug-urls
 gem 'graphql', '~> 1.9'
-gem 'graphql-batch', '~> 0.3.10' # XXX: 0.4 breaks batching when id field is selected
-gem 'cacheql'
+gem 'graphql-batch', '~> 0.4.3'
 gem 'kaminari', '~> 0.17' # Pagination
 
 # Use ActiveModel has_secure_password
