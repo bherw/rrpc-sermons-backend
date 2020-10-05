@@ -17,7 +17,7 @@ gem 'sidekiq-scheduler', '~> 3.0'
 
 # Attachments
 gem 'aws-sdk-s3', '~> 1.39'
-gem 'shrine', '~> 2.5'
+gem 'shrine', '~> 3.3'
 gem 'taglib-ruby', '~> 0.7' # audio file duration metadata
 
 # Misc
