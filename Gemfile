@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Core
-gem 'puma', '~> 3.6'
+gem 'puma', '~> 4.3'
 gem 'rails', '~> 5.0'
 gem 'addressable', '~> 2.5' # Address logic
 
