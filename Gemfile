@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # Core
 gem 'puma', '~> 3.6'
 gem 'rails', '~> 5.0'
-gem 'addressable', '~> 2.5' # Address logic
+gem 'addressable', '~> 2.8' # Address logic
 
 # Database
 gem 'elasticsearch', '~> 5.0'
