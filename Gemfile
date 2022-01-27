@@ -12,7 +12,7 @@ gem 'pg', '~> 0.19'
 gem 'redis-namespace', '~> 1.5'
 
 # Background tasks
-gem 'sidekiq', '~> 5.0'
+gem 'sidekiq', '~> 6.4'
 gem 'sidekiq-scheduler', '~> 3.0'
 
 # Attachments
